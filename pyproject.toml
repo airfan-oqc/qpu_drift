@@ -1,0 +1,49 @@
+[project]
+name = "qpu_drift"
+version = "0.1.0"
+description = "OQC QPU calibration analysis scripts and notebooks"
+readme = "README.md"
+# oqc-qcaas-client requires Python >=3.10,<3.13
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "oqc-qcaas-client>=3.22.1",
+    "numpy>=2.2.5",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+fetch-benchmarking = "qpu_drift.sources.benchmarking.fetch:main"
+build-benchmarking = "qpu_drift.sources.benchmarking.build:main"
+build-benchmarking-l2 = "qpu_drift.sources.benchmarking.build:build_l2"
+decode-ds1 = "qpu_drift.sources.benchmarking.recover:decode_ds1"
+build-fridge = "qpu_drift.sources.fridge.build:main"
+build-measurements = "qpu_drift.sources.measurements.build:main"
+build-hardware-models = "qpu_drift.sources.hardware_models.build:main"
+build-run-map = "qpu_drift.derived.run_map.build:main"
+supplement-kpi = "qpu_drift.derived.supplement:main"
+
+[dependency-groups]
+notebook = [
+    "ipykernel>=6.29",
+    "jupyterlab>=4.2",
+]
+analysis = [
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "matplotlib>=3.9",
+    "duckdb>=1.1",
+]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8",
+]
+
+[tool.uv]
+default-groups = ["notebook", "analysis", "dev"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qpu_drift"]
